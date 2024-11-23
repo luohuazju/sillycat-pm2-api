@@ -1,0 +1,23 @@
+{
+  "name": "sillycat-pm2-api",
+  "version": "1.0.0",
+  "description": "provide restful api for pm2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luohuazju/sillycat-pm2-api.git"
+  },
+  "keywords": [
+    "pm2",
+    "restful"
+  ],
+  "author": "Carl Luo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luohuazju/sillycat-pm2-api/issues"
+  },
+  "homepage": "https://github.com/luohuazju/sillycat-pm2-api#readme"
+}
