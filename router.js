@@ -38,3 +38,5 @@ var router = express.Router();
  *           $ref: '#/definitions/Application'
  */
 router.get('/api/v1/applications', pm2Controller.listAll);
+
+module.exports = router;
