@@ -3,6 +3,7 @@ const PM2Service = require("../service/pm2-service");
 class PM2Controller {
   constructor() {
     this.pm2Service = new PM2Service();
+    this.listAll = this.listAll.bind(this);
   }
 
   async listAll(req, res) {

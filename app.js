@@ -64,16 +64,6 @@ const setSwagger = require('./swagger');
 
 })();
 
-// // Route to list all PM2 processes
-// app.get("/list", (req, res) => {
-//   pm2.list((err, processList) => {
-//     if (err) {
-//       return res.status(500).json({ error: "Failed to retrieve process list", details: err.message });
-//     }
-//     res.json(processList);
-//   });
-// });
-
 // // Route to start a new PM2 process
 // app.post("/start", (req, res) => {
 //   const { script, name, args } = req.body;
