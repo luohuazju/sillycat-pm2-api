@@ -2,7 +2,7 @@
   "name": "sillycat-pm2-api",
   "version": "1.0.0",
   "description": "provide restful api for pm2",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/luohuazju/sillycat-pm2-api/issues"
   },
-  "homepage": "https://github.com/luohuazju/sillycat-pm2-api#readme"
+  "homepage": "https://github.com/luohuazju/sillycat-pm2-api#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "pm2": "^5.4.3",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.1"
+  }
 }
