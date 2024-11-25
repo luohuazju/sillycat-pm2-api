@@ -15,11 +15,11 @@ class PM2Controller {
       // Logging parameters and body for debugging
       console.log("Params:", req.params);
       console.log("Body:", req.body);
-      const { name, instances } = req.body;
+      const { name } = req.body;
       if (!name) {
         return res.status(400).json({ error: "Missing required fields: 'name'" });
       }
-      const updatedProcess = await this.pm2Service.restartApplication(name, instances);
+      const updatedProcess = await this.pm2Service.restartApplication(name);
       res.json(updatedProcess);
     } catch(error) {
       // Handle errors gracefully

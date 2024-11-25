@@ -88,23 +88,16 @@ class PM2Service {
     }
   }
 
-  async restartApplication(name, instances) {
+  async restartApplication(name) {
     if (!name) {
       throw new Error("Missing required fields: 'name'");
     }
     try {
       const updateProcess = await new Promise((resolve, reject)=> {
-        pm2.restart(
-          {
-            name,
-            instances: instances || 1,
-            updateEnv: true,
-          },
-          (err, proc) => {
+        pm2.restart(name, (err, proc) => {
             if (err) { return reject(err); }
             resolve(proc);
-          }
-        );
+          });
       });
       return updateProcess;
     } catch (err) {
