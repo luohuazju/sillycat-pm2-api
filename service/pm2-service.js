@@ -52,6 +52,67 @@ class PM2Service {
     }
   }
 
+  async deleteApplication(name) {
+    if (!name) {
+      throw new Error("Missing required fileds: 'name'");
+    }
+    try {
+      const msg = await new Promise((resolve, reject)=> {
+        pm2.delete(name, (err) => {
+          if (err) { return reject(err); }
+          resolve({ message: `Process '${name}' deleted` });
+        });
+      });
+      return msg;
+    } catch (err) {
+      console.error("Failed to delete PM2 process", err.message);
+      throw new Error("Failed to delete PM2 process");
+    }
+  }
+
+  async stopApplication(name) {
+    if (!name) {
+      throw new Error("Missing required fileds: 'name'");
+    }
+    try {
+      const msg = await new Promise((resolve, reject)=> {
+        pm2.stop(name, (err) => {
+          if (err) { return reject(err); }
+          resolve({ message: `Process '${name}' stopped` });
+        });
+      });
+      return msg;
+    } catch (err) {
+      console.error("Failed to stop PM2 process", err.message);
+      throw new Error("Failed to stop PM2 process");
+    }
+  }
+
+  async restartApplication(name, instances) {
+    if (!name) {
+      throw new Error("Missing required fields: 'name'");
+    }
+    try {
+      const updateProcess = await new Promise((resolve, reject)=> {
+        pm2.restart(
+          {
+            name,
+            instances: instances || 1,
+            updateEnv: true,
+          },
+          (err, proc) => {
+            if (err) { return reject(err); }
+            resolve(proc);
+          }
+        );
+      });
+      return updateProcess;
+    } catch (err) {
+      console.error("Failed to restart PM2 process", err.message);
+      throw new Error("Failed to restart a process");
+    }
+  }
+
   async createApplication(name, script, args, cwd, instances){
     if (!script || !name || !cwd ) {
       throw new Error("Missing required fields: 'script' and 'name' and 'cwd'");

@@ -40,5 +40,9 @@ var router = express.Router();
 router.get('/api/v1/applications', pm2Controller.listAll);
 
 router.post('/api/v1/applications', pm2Controller.createApplication);
+router.post('/api/v1/applications/stop', pm2Controller.stopApplication);
+router.post('/api/v1/applications/delete', pm2Controller.deleteApplication);
+router.post('/api/v1/applications/restart', pm2Controller.restartApplication);
+
 
 module.exports = router;
