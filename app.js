@@ -68,23 +68,6 @@ const setSwagger = require('./swagger');
 // app.post("/start", (req, res) => {
 //   const { script, name, args } = req.body;
 
-//   if (!script || !name) {
-//     return res.status(400).json({ error: "Missing required fields: 'script' and 'name'" });
-//   }
-
-//   pm2.start(
-//     {
-//       script,
-//       name,
-//       args: args || [],
-//     },
-//     (err, proc) => {
-//       if (err) {
-//         return res.status(500).json({ error: "Failed to start process", details: err.message });
-//       }
-//       res.json({ message: "Process started", process: proc });
-//     }
-//   );
 // });
 
 // // Route to stop a PM2 process

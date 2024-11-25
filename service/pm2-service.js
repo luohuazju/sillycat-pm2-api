@@ -41,7 +41,7 @@ class PM2Service {
     try {
       const processList = await new Promise((resolve, reject) => {
         pm2.list((err, list) => {
-          if (err) return reject(err);
+          if (err) { return reject(err); }
           resolve(list);
         });
       });
@@ -49,6 +49,35 @@ class PM2Service {
     } catch (err) {
       console.error("Failed to retrieve PM2 process list:", err.message);
       throw new Error("Failed to retrieve process list");
+    }
+  }
+
+  async createApplication(name, script, args, cwd, instances){
+    if (!script || !name || !cwd ) {
+      throw new Error("Missing required fields: 'script' and 'name' and 'cwd'");
+    }
+    try {
+      const process = await new Promise((resolve, reject)=> {
+        pm2.start(
+          {
+            script,
+            name,
+            args: args || [],
+            cwd: cwd,
+            interpreter: 'none',
+            instances: instances || 1,
+            watch: true,
+          },
+          (err, proc) => {
+            if (err) { return reject(err); }
+            resolve(proc);
+          }
+        );
+      });
+      return process;
+    } catch (err) {
+      console.error("Failed to create PM2 process", err.message);
+      throw new Error("Failed to create a new process");
     }
   }
 }
