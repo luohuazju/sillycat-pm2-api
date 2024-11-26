@@ -1,13 +1,11 @@
 const PM2Service = require("../service/pm2-service");
+const ProcessService = require("../service/process-service");
+
+const pm2Service = new PM2Service();
+const processService = new ProcessService();
 
 class PM2Controller {
   constructor() {
-    this.pm2Service = new PM2Service();
-    this.listAll = this.listAll.bind(this);
-    this.createApplication = this.createApplication.bind(this);
-    this.stopApplication = this.stopApplication.bind(this);
-    this.deleteApplication = this.deleteApplication.bind(this);
-    this.restartApplication = this.restartApplication.bind(this);
   }
 
   async restartApplication(req, res) {
@@ -19,7 +17,7 @@ class PM2Controller {
       if (!name) {
         return res.status(400).json({ error: "Missing required fields: 'name'" });
       }
-      const updatedProcess = await this.pm2Service.restartApplication(name);
+      const updatedProcess = await pm2Service.restartApplication(name);
       res.json(updatedProcess);
     } catch(error) {
       // Handle errors gracefully
@@ -40,7 +38,7 @@ class PM2Controller {
       if (!name) {
         return res.status(400).json({ error: "Missing required fields: 'name'" });
       }
-      const msg = await this.pm2Service.deleteApplication(name);
+      const msg = await pm2Service.deleteApplication(name);
       res.json(msg);
     } catch(error) {
       // Handle errors gracefully
@@ -61,13 +59,34 @@ class PM2Controller {
       if (!name) {
         return res.status(400).json({ error: "Missing required fields: 'name'" });
       }
-      const msg = await this.pm2Service.stopApplication(name);
+      const msg = await pm2Service.stopApplication(name);
       res.json(msg);
     } catch(error) {
       // Handle errors gracefully
       console.error("Error stop PM2 processes:", error);
       res.status(500).json({
         error: "Failed to stop PM2 processes",
+        details: error.message,
+      });
+    }
+  }
+
+  async scaleApplication(req, res) {
+    try {
+      // Logging parameters and body for debugging
+      console.log("Params:", req.params);
+      console.log("Body:", req.body);
+      const { name, instances } = req.body;
+      if (!name || !instances) {
+        return res.status(400).json({ error: "Missing required fields: 'name' and 'instances'" });
+      }
+      const process = await processService.pmScale(name, instances);
+      res.json(process);
+    } catch (error) {
+      // Handle errors gracefully
+      console.error("Error scale PM2 processes:", error);
+      res.status(500).json({
+        error: "Failed to scale PM2 processes",
         details: error.message,
       });
     }
@@ -82,7 +101,7 @@ class PM2Controller {
       if (!script || !name || !cwd) {
         return res.status(400).json({ error: "Missing required fields: 'script' and 'name' and 'cwd'" });
       }
-      const process = await this.pm2Service.createApplication(name, script, args, cwd, instances);
+      const process = await pm2Service.createApplication(name, script, args, cwd, instances);
       res.json(process);
     } catch (error) {
       // Handle errors gracefully
@@ -97,7 +116,7 @@ class PM2Controller {
   async listAll(req, res) {
     try {
       // Await the service call to ensure proper response handling
-      const list = await this.pm2Service.listAll();
+      const list = await pm2Service.listAll();
 
       // Send a JSON response
       res.json(list);
