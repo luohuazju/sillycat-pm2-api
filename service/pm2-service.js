@@ -114,9 +114,9 @@ class PM2Service {
       const process = await new Promise((resolve, reject)=> {
         pm2.start(
           {
-            script,
+            script: 'bash',
             name,
-            args: args || [],
+            args: [ '-c', args ] || [],
             cwd: cwd,
             interpreter: 'none',
             instances: instances || 1,
